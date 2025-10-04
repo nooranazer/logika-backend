@@ -56,3 +56,28 @@ export const addProduct = async (req, res, next) => {
     return next(new HttpError('server error', 500));
   }
 };
+
+
+// View Single Product
+export const getOneProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findOne({ _id: id, isDeleted: false });
+
+    if (!product) {
+      return next(new HttpError("Product not found", 404));
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "Product fetched successfully",
+      data: product,
+    });
+
+  } catch (err) {
+    console.error(err);
+    return next(new HttpError("Failed to view Product", 500));
+  }
+};
+
