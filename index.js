@@ -20,10 +20,7 @@ connectDB()
 app.use(express.json())
 app.use(cors())
 
-app.get("/test", (req, res) => {
-  console.log("✅ /test route hit");
-  res.send("Test route works");
-});
+
 
 
 app.use('/api/product', productRouter)

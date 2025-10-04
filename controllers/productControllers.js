@@ -81,3 +81,60 @@ export const getOneProduct = async (req, res, next) => {
   }
 };
 
+//update
+
+export const updateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const updateFields = { ...req.body }; 
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: id, isDeleted: false },
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return next(new HttpError('Product not found', 404));
+    }
+
+    res.status(200).json({
+      status: true,
+      message: 'Product updated successfully',
+      data: updatedProduct
+    });
+    
+  } catch (err) {
+    console.error(err);
+    return next(new HttpError('Failed to update product', 500));
+  }
+};
+
+//delete
+export const deleteProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (!product) {
+      return next(new HttpError('Product not found', 404));
+    }
+
+    res.status(200).json({
+      status: true,
+      message: 'Product deleted successfully',
+      data: null 
+    });
+
+  } catch (err) {
+    console.error(err);
+    return next(new HttpError("Failed to delete product", 500));
+  }
+};
+
