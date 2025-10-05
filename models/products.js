@@ -14,7 +14,9 @@ const productSchema = new mongoose.Schema({
         required: true 
     },
     areaOfApply: {
-        type: String 
+        text: { type: String, 
+        required: true },     
+        files: [{ type: String }] 
     },                        
     image: { 
         type: String,
